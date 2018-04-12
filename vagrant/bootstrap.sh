@@ -2,8 +2,8 @@
 echo '----------------------------------------'
 echo 'Cleaning apt-get...'
 echo '----------------------------------------'
-apt-get clean
-
+sudo apt-get clean
+sudo apt-get install -f
 echo '----------------------------------------'
 echo 'Importing mongodb keys and list file...'
 echo '----------------------------------------'
@@ -13,25 +13,22 @@ echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/
 
 
 echo '----------------------------------------'
-echo 'Installing nodejs'
-echo '----------------------------------------'
-# Install nodejs
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-echo '----------------------------------------'
 echo 'Updating and upgrading the package database...'
 echo '----------------------------------------'
 # Update the package database
-apt-get -y update
-apt-get -y upgrade
+sudo apt-get autoclean $$ apt-get clear cache
+sudo apt-get -y update
+sudo apt-get -y upgrade
 
 
 echo '----------------------------------------'
-echo 'Installing git, npm, and mongoDB...'
+echo 'Installing git, nodejs (& npm), and mongoDB...'
 echo '----------------------------------------'
 # Install software
-apt-get -f -y install git npm mongodb-org
+sudo apt-get -f -y install git
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get -f -y install nodejs
+sudo apt-get -f -y install mongodb-org
 
 
 echo '----------------------------------------'
@@ -52,11 +49,14 @@ echo 'Stopping existing mongod processes...'
 echo '----------------------------------------'
 sudo service mongod stop
 
+
 echo '----------------------------------------'
 echo 'Starting mongo with database path "/data"... (will release control)'
 echo '----------------------------------------'
 # Start mongod daemon
 sudo mongod --dbpath /data &
+sudo service mongod start
+
 
 #echo '----------------------------------------'
 #echo 'Restarting the mongod service...'

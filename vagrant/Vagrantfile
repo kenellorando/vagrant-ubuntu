@@ -70,4 +70,5 @@ Vagrant.configure("2") do |config|
   # SHELL
   config.vm.synced_folder "..", "/tuto"
   config.vm.network "forwarded_port", guest: 4532, host: 4532
+  config.vm.network "forwarded_port", guest: 27017, host: 27017
 end
